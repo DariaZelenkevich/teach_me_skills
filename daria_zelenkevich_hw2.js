@@ -55,7 +55,7 @@ function getAvg(numbersArr) {
         sum += numbersArr[i];
     }
 
-    return sum / i;
+    return sum / numbersArr.length;
 }
 
 
@@ -71,13 +71,12 @@ function getAvg(numbersArr) {
 
 function getGoodStudents (studentsArr) {
 
-    var goodStudents = studentsArr.filter(function(student) {
+    return studentsArr.filter(function(student) {
 
         return getAvg(student.grades) >= 4;
 
     });
 
-    return goodStudents;
 }
 
 console.log(getGoodStudents(students));
