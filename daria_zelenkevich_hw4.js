@@ -9,6 +9,7 @@ function Student (first_name, last_name, age, grades) {
         var sum = 0;
 
         for(var i = 0; i < this.grades.length; i++) {
+            
             sum += this.grades[i];
         }
 
