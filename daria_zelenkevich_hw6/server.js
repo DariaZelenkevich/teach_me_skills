@@ -11,7 +11,9 @@ function accept(req, res) {
 
   if (req.url == '/students.json') {
 
+    setTimeout(function() {
       file.serve(req, res);
+    }, 5000);
 
   } else {
     file.serve(req, res);
