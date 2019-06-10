@@ -1,0 +1,62 @@
+[
+	{
+		"id": 0,
+		"parent_id": null,
+		"name": "IT Department Head"
+	},
+	{
+		"id": 1,
+		"parent_id": 0,
+		"name": "Team Lead"
+	},
+	{
+		"id": 2,
+		"parent_id": 1,
+		"name": "Front-end Developer"
+	},
+	{
+		"id": 3,
+		"parent_id": null,
+		"name": "QA Department Head"
+	},
+	{
+		"id": 4,
+		"parent_id": 3,
+		"name": "Test Lead"
+	},
+	{
+		"id": 5,
+		"parent_id": 4,
+		"name": "QA Engineer"
+	},
+	{
+		"id": 6,
+		"parent_id": null,
+		"name": "Finance Department Head"
+	},
+	{
+		"id": 7,
+		"parent_id": 6,
+		"name": "Leading Accauntant"
+	},
+	{
+		"id": 8,
+		"parent_id": 7,
+		"name": "Accauntant"
+    },
+    {
+		"id": 9,
+		"parent_id": null,
+		"name":" Marketting Department Head"
+	},
+	{
+		"id": 10,
+		"parent_id": 9,
+		"name": "Marketting Department Head Deputy"
+	},
+	{
+		"id": 11,
+		"parent_id": 10,
+		"name": "Marketer"
+  }
+]

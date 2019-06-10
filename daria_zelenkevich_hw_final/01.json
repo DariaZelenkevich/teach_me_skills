@@ -1,0 +1,10 @@
+[
+    {
+        "id": 1,
+        "first_name": "Douglas",
+        "last_name": "Crockford",
+        "age": 64,
+        "phone": "578-1234",
+        "department_id": 0
+    }
+]

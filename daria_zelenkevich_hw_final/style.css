@@ -1,0 +1,58 @@
+/*document*/
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+/*tree*/
+
+#tree ul,
+#tree ul ul {
+    margin: 0;
+    padding-left: 20px;
+}
+  
+#tree > li::before,
+.deputy_list > li::before {
+    content: '▶ ';
+    font-size: 80%;
+    color: green;
+}
+
+#tree span:hover {
+    font-weight: bold;
+}
+
+#tree span {
+    cursor: pointer;
+}
+
+
+#tree li {
+    list-style-type: none;
+}
+
+/* table */
+
+thead td {
+    border: 2px solid black;
+}
+
+tbody td {
+    border: 1px solid black;
+}
+
+td {
+    padding: 10px;
+    text-align: center;
+}
+
