@@ -86,11 +86,7 @@ function createTable (data) {
 
 	var tbody = table.querySelector('TBODY');
 
-	if(tbody !== null) {
-		
-		clearTable();
-
-	}
+	clearTable();
 
 	var tbody = document.createElement('TBODY');
 
@@ -130,92 +126,121 @@ function clearTable() {
 	var table = document.querySelector('TABLE');
 	var tbody = table.querySelector('TBODY');
 
-	table.removeChild(tbody);
- 
-}
-
-function createTree(arr) {
-
-	var tree = document.createElement('ul');
-	tree.setAttribute('id', 'tree');
-	document.body.insertBefore(tree, document.body.firstChild);
-
-	for(var i = 0; i < arr.length; i++) {
-
-		if(arr[i].parent_id == null){
-
-			var headNode = document.createElement('li');
-			headNode.setAttribute('employee_id', arr[i].id);
-			headNode.innerText = arr[i].name;
-			
-
-			for(var j = 0; j < arr.length; j++) {
-
-				if(arr[j].parent_id == arr[i].id) {
-					var deputyList = document.createElement('ul');
-					deputyList.setAttribute('class', 'deputy_list');
-					deputyList.setAttribute('hidden', true);
-
-
-					var deputyNode = document.createElement('li');
-					deputyNode.setAttribute('employee_id', arr[j].id);
-					deputyNode.innerText =  arr[j].name;
-
-					for(var n = 0; n < arr.length; n++) {
-
-						if(arr[n].parent_id == arr[j].id){
-							var employeeList = document.createElement('ul');
-							employeeList.setAttribute('class', 'employee_list');
-							employeeList.setAttribute('hidden', true);
-
-
-							var employeeNode = document.createElement('li');
-							employeeNode.setAttribute('employee_id', arr[n].id);
-							employeeNode.innerText =  arr[n].name;
-
-			
-							employeeList.appendChild(employeeNode);
-							deputyNode.appendChild(employeeList);
-						}
-
-					}
-			
-					deputyList.appendChild(deputyNode);
-					headNode.appendChild(deputyList);
-				}
-
-			}
+	if(tbody !== null) {
 		
-			tree.appendChild(headNode);	
-
-		}
+		table.removeChild(tbody);
 
 	}
 
-	var treeLis = tree.getElementsByTagName('li');
+}
 
-	for (var i = 0; i < treeLis.length; i++) {
-		var li = treeLis[i];
+function createTreeNodeList(arr) {
 
-		var span = document.createElement('span');
-		li.insertBefore(span, li.firstChild);
-		span.appendChild(span.nextSibling);
+	var clonedArray = JSON.parse(JSON.stringify(arr));
+
+
+    for (var i = 0; i < clonedArray.length; i++) {
+
+
+        if (clonedArray[i].parent_id !== null) {
+
+
+            for (var j = 0; j < clonedArray.length; j++) {
+
+                if (clonedArray[j].id === clonedArray[i].parent_id) {
+
+                    if (!clonedArray[j].children) {
+                        clonedArray[j].children = [];
+                    }
+
+                    clonedArray[j].children.push(clonedArray[i]);
+                }
+            }
+        }
+	}
+    
+    return clonedArray.filter(function (val) {
+        return val.parent_id === null; 
+	});
+	
+}
+
+function createTree(data) {
+	
+	var treeArr = createTreeNodeList(data);
+
+    var treeRoot = document.createElement('ul');
+
+	addEl(treeRoot, treeArr);
+	
+	var container = document.getElementById('container');
+
+    container.insertBefore(treeRoot, container.firstChild);
+
+    function addEl(parent, children) {
+    
+        for (var i = 0; i < children.length; i++) {
+			var li = document.createElement('li');
+			li.setAttribute('employee_id', children[i].id);
+			var span = document.createElement('SPAN');
+  
+			span.innerText = children[i].name;
+	  		li.appendChild(span);
+            parent.appendChild(li);
+
+            if (children[i].children) {
+				var ul = document.createElement('ul');
+				ul.setAttribute('style', 'display: none;');
+				addEl(ul, children[i].children);
+				li.appendChild(ul);
+			}
+        }
+    }
+} 
+
+function rollUpTree() {
+	var tree = document.getElementById('tree');
+	var nodes = tree.querySelectorAll('ul');
+	for(var i = 0; i < nodes.length; i++) {
+
+		nodes[i].setAttribute('style', 'display: none;');
+
 	}
 }
 
 
+function clearAll() {
+
+	clearTable();
+	localStorage.clear();
+	rollUpTree();
+}
 
 
-document.addEventListener("DOMContentLoaded",function () {
+var clearButton = document.createElement('BUTTON');
+clearButton.setAttribute('type', 'button');
+clearButton.setAttribute('id', 'button');
+clearButton.innerText = 'Очистить';
+clearButton.addEventListener('click', clearAll);
 
+
+document.body.appendChild(clearButton);
+
+
+window.onload = function () {
 	makeRequest('employee', createTree);
+
+
+	var tree = document.querySelector('ul');
+	tree.setAttribute('id', 'tree');
+
 
 	tree.onclick = function(event) {
 
 		var target = event.target;
 
-		var employeeID = target.parentNode.getAttribute('employee_id');
 
+		var employeeID = target.parentNode.getAttribute('employee_id');
 
 		if (employeeID.length < 2) {
 			employeeID = '0' + employeeID;
@@ -224,14 +249,16 @@ document.addEventListener("DOMContentLoaded",function () {
 
 		makeRequest(employeeID, createTable);
 
-		var childrenContainer = target.parentNode.getElementsByTagName('ul')[0];
-		if (!childrenContainer) return; 
 
-		childrenContainer.hidden = !childrenContainer.hidden;
+		var childrenContainer = target.parentNode.getElementsByTagName('ul')[0];
+		if (!childrenContainer) return;
+		childrenContainer.style.display = childrenContainer.style.display ? '' : 'none';
 
 	}
-  
-});
+}
+
+
+
 
 
 
